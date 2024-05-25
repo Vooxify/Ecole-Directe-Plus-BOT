@@ -4,7 +4,8 @@
   "description": "The bot for Ecole Directe Plus website",
   "main": "src/index.js",
   "scripts": {
-    "run-bot": "nodemon"
+    "dev": "nodemon",
+    "code": "nodemon"
   },
   "author": "vooxify.public@outlook.fr",
   "license": "ISC",
