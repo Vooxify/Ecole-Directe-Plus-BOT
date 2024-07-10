@@ -117,8 +117,9 @@ module.exports = {
                     ephemeral: true,
                 });
             }
-
+            
             const messages = await statChannel.messages.fetch({ limit: 1 });
+            
             const lastStatMessage = messages.first();
 
             const member = await statChannel.guild.members.fetch(lastStatMessage.author.id);
@@ -147,7 +148,7 @@ module.exports = {
                 const Stats = organiseObject(statObject)
 
                 
-                console.log(Stats.currentlyInDevloppement.inDevCount)
+                console.log(Stats)
                 
             }
 
