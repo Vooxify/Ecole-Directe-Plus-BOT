@@ -1,55 +1,55 @@
-const { testServer } = require('../../../config.json')
-const areCommandsDifferent = require('../../utils/areCommandsDifferent')
-const getApplicationCommands = require('../../utils/getApplicationCommands')
-const getlocalCommands = require('../../utils/getLocalCommands')
+const { testServer } = require("../../../config.json");
+const areCommandsDifferent = require("../../utils/areCommandsDifferent");
+const getApplicationCommands = require("../../utils/getApplicationCommands");
+const getlocalCommands = require("../../utils/getLocalCommands");
 
-module.exports = async ( client ) => {
-    
-    try {
-        const localCommands = await getlocalCommands()
-        const applicationCommands = await getApplicationCommands( client, testServer )
-        
-        for (const localCommand of localCommands) {
-            const { name, description, options } = localCommand
+module.exports = async (client) => {
+  try {
+    const localCommands = await getlocalCommands();
+    const applicationCommands = await getApplicationCommands(
+      client,
+      testServer
+    );
 
-            const existingCommand = await applicationCommands.cache.find(
-                (cmd) => cmd.name === name
-            )
+    for (const localCommand of localCommands) {
+      const { name, description, options } = localCommand;
 
-            if (existingCommand) {
-                if (localCommand.deleted) {
-                    await applicationCommands.delete(existingCommand.id)
-                    console.log(`[-] Deleted command "${name}".`)
-                    continue
-                }
-                if (areCommandsDifferent( existingCommand, localCommand )) {
-                    await applicationCommands.edit(existingCommand.id, {
-                        description,
-                        options,
-                    });
+      const existingCommand = await applicationCommands.cache.find(
+        (cmd) => cmd.name === name
+      );
 
-                    console.log(`[+] Edited command "${name}".`)
-                }
-            }
-            else {
-                if (localCommand.deleted) {
-                    console.log(`[-] Skipping registering command ${name} as it's set to delete.`)
-                    continue
-                }
+      if (existingCommand) {
+        if (localCommand.deleted) {
+          await applicationCommands.delete(existingCommand.id);
+          console.log(`[-] Deleted command "${name}".`);
+          continue;
+        }
+        if (areCommandsDifferent(existingCommand, localCommand)) {
+          await applicationCommands.edit(existingCommand.id, {
+            description,
+            options,
+          });
 
-                await applicationCommands.create({
-                    name,
-                    description,
-                    options,
-                })
-
-                console.log(`[+] Registered command ${name}.`)
-
-
-            }
+          console.log(`[+] Edited command "${name}".`);
+        }
+      } else {
+        if (localCommand.deleted) {
+          console.log(
+            `[-] Skipping registering command ${name} as it's set to delete.`
+          );
+          continue;
         }
 
-    } catch (error) {
-        console.log(`[!] There was an error : ${error}`)
+        await applicationCommands.create({
+          name,
+          description,
+          options,
+        });
+
+        console.log(`[+] Registered command ${name}.`);
+      }
     }
-}
+  } catch (error) {
+    console.log(`[!] There was an error : ${error}`);
+  }
+};
