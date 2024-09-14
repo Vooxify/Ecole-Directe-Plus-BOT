@@ -1,6 +1,6 @@
 // Importation de la fonction utilitaire qui permet d'obtenir les options du canal
 const { getChannelOptions } = require("../../utils/getChannelOptions");
-const { getStatChannelId } = require("./setchannel");
+const { get_json_stat_channel_id } = require("./tools/get_json_content");
 
 // Fonction qui extrait des statistiques d'un message donné
 function getStat(msg, inDevArray, currentlyInDevloppementArray) {
@@ -121,11 +121,12 @@ module.exports = {
 
   callback: async (client, interaction) => {
     try {
+      const CHANNEL_ID_DYNAMIC = await get_json_stat_channel_id();
       // Récupère les options du canal à partir de l'ID
       const statChannel = getChannelOptions(
         client,
         interaction,
-        getStatChannelId(interaction)
+        CHANNEL_ID_DYNAMIC.stat_channel_id
       );
 
       if (!statChannel) {
