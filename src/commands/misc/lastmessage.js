@@ -1,20 +1,20 @@
 // Importation de la fonction utilitaire qui permet d'obtenir les options du canal
-const { getChannelOptions } = require('../../utils/getChannelOptions');
-const { get_json_stat_channel_id } = require('./tools/get_json_content');
+const { getChannelOptions } = require("../../utils/getChannelOptions");
+const { get_json_stat_channel_id } = require("./tools/get_json_content");
 
 // Fonction qui extrait des statistiques d'un message donné
 function getStat(msg, inDevArray, currentlyInDevloppementArray) {
     // Définition des informations de base à rechercher dans le message
     const baseInfos = {
-        'Utilisateurs mensuels': 'mensualUsersNumber', // Nombre d'utilisateurs mensuels
-        'Retours positifs': 'positiveFedbackNumber', // Nombre de retours positifs
-        Progression: 'progressPercentage', // Progression du projet en pourcentage
-        'Fonctionnalités en cours de développement': 'featuresCountNumber', // Nombre de fonctionnalités en développement
-        'Actuellement sur le dévloppement': 'currentlyInDevloppementNumber', // Nombre de tâches actuellement en développement
+        "Utilisateurs mensuels": "mensualUsersNumber", // Nombre d'utilisateurs mensuels
+        "Retours positifs": "positiveFedbackNumber", // Nombre de retours positifs
+        Progression: "progressPercentage", // Progression du projet en pourcentage
+        "Fonctionnalités en cours de développement": "featuresCountNumber", // Nombre de fonctionnalités en développement
+        "Actuellement sur le dévloppement": "currentlyInDevloppementNumber", // Nombre de tâches actuellement en développement
     };
 
     // Initialisation des clés et des tableaux associés
-    let key = ['featuresCountArray', 'currentlyInDevloppementArray'];
+    let key = ["featuresCountArray", "currentlyInDevloppementArray"];
     let id = [inDevArray, currentlyInDevloppementArray];
     let i = 0;
 
@@ -49,10 +49,10 @@ function getArray(msg, i) {
     let statContent = [];
 
     // Détermine quel symbole utiliser selon le type d'information à extraire
-    if (i === 'inDev') {
-        symbol = '\u21C1'; // Symbole pour les éléments en développement
-    } else if (i === 'modification') {
-        symbol = '\u21C0'; // Symbole pour les éléments en modification
+    if (i === "inDev") {
+        symbol = "\u21C1"; // Symbole pour les éléments en développement
+    } else if (i === "modification") {
+        symbol = "\u21C0"; // Symbole pour les éléments en modification
     }
 
     let position = 0;
@@ -65,7 +65,7 @@ function getArray(msg, i) {
             break; // Si aucun symbole n'est trouvé, arrête la boucle
         }
 
-        const endLinePosition = msg.indexOf('\n', symbolPosition); // Recherche la fin de la ligne
+        const endLinePosition = msg.indexOf("\n", symbolPosition); // Recherche la fin de la ligne
         let textAfterSymbol;
 
         if (endLinePosition !== -1) {
@@ -116,8 +116,8 @@ function organiseObject(obj) {
 
 // Module principal exporté, contenant la commande "getlastmessage"
 module.exports = {
-    name: 'getlastmessage', // Nom de la commande
-    description: 'Get the latest message in a channel', // Description de la commande
+    name: "getlastmessage", // Nom de la commande
+    description: "Get the latest message in a channel", // Description de la commande
 
     callback: async (client, interaction) => {
         try {
@@ -147,9 +147,9 @@ module.exports = {
             const role = member.roles.highest; // Récupère le rôle le plus élevé de l'auteur
 
             // Vérifie si le dernier message a été envoyé par un utilisateur avec le rôle "Messenger"
-            if (lastStatMessage && role.name === 'Messenger') {
+            if (lastStatMessage && role.name === "Messenger") {
                 await interaction.reply({
-                    content: 'Success', // Réponse de succès
+                    content: "Success", // Réponse de succès
                     ephemeral: true,
                 });
 
@@ -164,13 +164,13 @@ module.exports = {
             // Si le message contient des informations sur la progression, extrait les données
             if (
                 lastStatMessage &&
-                lastStatMessage.content.includes('Progression')
+                lastStatMessage.content.includes("Progression")
             ) {
                 const modifs = getArray(
                     lastStatMessage.content,
-                    (i = 'modification')
+                    (i = "modification")
                 ); // Récupère les modifications
-                const inDev = getArray(lastStatMessage.content, (i = 'inDev')); // Récupère les éléments en développement
+                const inDev = getArray(lastStatMessage.content, (i = "inDev")); // Récupère les éléments en développement
 
                 // Extrait les statistiques du message
                 let { key, id } = getStat(
@@ -187,7 +187,7 @@ module.exports = {
             }
         } catch (error) {
             // Gère les erreurs et envoie un message d'erreur à l'utilisateur
-            console.error('Error fetching last message:', error);
+            console.error("Error fetching last message:", error);
             await interaction.reply({
                 content: `An error occurred: ${error.message}`,
                 ephemeral: true,

@@ -1,10 +1,10 @@
-const { ApplicationCommandOptionType } = require('discord.js');
-const fs = require('fs');
+const { ApplicationCommandOptionType } = require("discord.js");
+const fs = require("fs");
 
-const JSON_F = './src/commands/misc/config/channel_id.json'; // set json file path
+const JSON_F = "./src/commands/misc/config/channel_id.json"; // set json file path
 
 const edit_json_file = (new_id) => {
-    fs.readFile(JSON_F, 'utf-8', (error, raw) => {
+    fs.readFile(JSON_F, "utf-8", (error, raw) => {
         // Open file
         if (error) return console.log(error); // errors
 
@@ -19,12 +19,12 @@ const edit_json_file = (new_id) => {
     });
 };
 module.exports = {
-    name: 'setchannel',
-    description: 'set channel id',
+    name: "setchannel",
+    description: "set channel id",
     options: [
         {
-            name: 'id',
-            description: 'id desc',
+            name: "id",
+            description: "id desc",
             type: ApplicationCommandOptionType.Channel,
             required: true,
         },

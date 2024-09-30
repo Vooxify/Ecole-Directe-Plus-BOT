@@ -1,9 +1,9 @@
-const { DiscordAPIError } = require('discord.js');
-const { get_json_stat_channel_id } = require('./tools/get_json_content');
+const { DiscordAPIError } = require("discord.js");
+const { get_json_stat_channel_id } = require("./tools/get_json_content");
 
 module.exports = {
-    name: 'getchannel',
-    description: 'Get the last setted id channel',
+    name: "getchannel",
+    description: "Get the last setted id channel",
     callback: async (client, interaction) => {
         try {
             const json_id = await get_json_stat_channel_id();
