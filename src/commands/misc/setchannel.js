@@ -19,8 +19,8 @@ const edit_json_file = (new_id) => {
   });
 };
 module.exports = {
-  name: "set",
-  description: "set desc",
+  name: "setchannel",
+  description: "set channel id",
   options: [
     {
       name: "id",
@@ -33,7 +33,11 @@ module.exports = {
     const stat_channel_id = // get channel id param
       interraction.options._hoistedOptions[0].value; /* See bottom (1) */
     edit_json_file(stat_channel_id);
-    interraction.reply(stat_channel_id);
+    const channel_stat = await client.channels.fetch(stat_channel_id) // magic ;-)
+    interraction.reply({
+      content: `The statistics channel was setted to ${channel_stat}`,
+      ephemeral: true,
+    });
   },
 };
 
