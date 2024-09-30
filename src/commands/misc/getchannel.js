@@ -10,7 +10,7 @@ module.exports = {
             const json_id = await get_json_stat_channel_id();
             channel_link = await client.channels.fetch(json_id.stat_channel_id)
             interaction.reply({
-                content: `The setted channel is ${channel_link}, you can change it with '/setchannel [<channel>]'`,
+                content: `The setted channel where message will be sent is ${channel_link}, you can change it with '/setchannel [<channel>]'`,
                 ephemeral: true
             })
         }

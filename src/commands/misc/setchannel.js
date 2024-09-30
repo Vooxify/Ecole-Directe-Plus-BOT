@@ -35,7 +35,7 @@ module.exports = {
     edit_json_file(stat_channel_id);
     const channel_stat = await client.channels.fetch(stat_channel_id) // magic ;-)
     interraction.reply({
-      content: `The statistics channel was setted to ${channel_stat}`,
+      content: `The statistics channel where messages will be sent has setted to ${channel_stat}`,
       ephemeral: true,
     });
   },
