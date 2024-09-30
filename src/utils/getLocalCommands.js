@@ -13,7 +13,7 @@ module.exports = (exceptions = []) => {
         const commandFiles = getAllFiles(commandCategorie);
 
         for (const commandFile of commandFiles) {
-            const commandObject = require(commandFile);
+            const commandObject = require(commandFile); // get the command info via module.export
 
             if (exceptions.includes(commandObject.name)) {
                 continue;
