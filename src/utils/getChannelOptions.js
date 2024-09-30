@@ -6,11 +6,9 @@ after, you can just use it without type always the same command, just call the f
 */
 
 function getChannelOptions(client, interaction, channelId) {
-    statChannel = client.channels.cache.get(channelId)
-    return statChannel
-
+    statChannel = client.channels.cache.get(channelId);
+    return statChannel;
 }
-
 
 /*
 
@@ -24,4 +22,4 @@ like, 'get' to get, messageS, channel name, etc...
 
 module.exports = {
     getChannelOptions: getChannelOptions,
-}
+};

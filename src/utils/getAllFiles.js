@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
 module.exports = (directory, foldersOnly = false) => {
     let filesNames = [];
@@ -7,18 +7,17 @@ module.exports = (directory, foldersOnly = false) => {
     const files = fs.readdirSync(directory, { withFileTypes: true });
 
     for (const file of files) {
-        const filePath = path.join(directory, file.name)
+        const filePath = path.join(directory, file.name);
 
         if (foldersOnly) {
             if (file.isDirectory()) {
-                filesNames.push(filePath)
+                filesNames.push(filePath);
             }
-        }
-        else {
+        } else {
             if (file.isFile()) {
-                filesNames.push(filePath)
+                filesNames.push(filePath);
             }
         }
     }
-    return filesNames
-}
+    return filesNames;
+};
