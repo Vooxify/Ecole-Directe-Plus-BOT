@@ -9,9 +9,7 @@ const edit_json_file = (new_id) => {
         if (error) return console.log(error); // errors
 
         let data = JSON.parse(raw); // json to js object
-        console.log(data); //
         data.stat_channel_id = new_id; // create or edit value in object
-        console.log(data); //
         fs.writeFile(JSON_F, JSON.stringify(data), (error) => {
             // write js object to json in file
             if (error) return console.log(error); // errors
@@ -35,7 +33,7 @@ module.exports = {
         edit_json_file(stat_channel_id);
         const channel_stat = await client.channels.fetch(stat_channel_id); // magic ;-)
         interraction.reply({
-            content: `The statistics channel where messages will be sent has setted to ${channel_stat}`,
+            content: `:white_check_mark:   The statistics channel set to ${channel_stat}`,
             ephemeral: true,
         });
     },

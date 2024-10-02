@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon",
         "code": "nodemon",
-        "format": "prettier --write \"src/**/*.{js,py,txt}\""
+        "format": "prettier --write \"src/**/*.{js,py,txt}\" \"api/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
