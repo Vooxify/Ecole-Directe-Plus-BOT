@@ -1,28 +1,23 @@
 const fs = require("fs");
-const path = require("path");
 
-function getAllSubdirectories(dirPath) {
-    const subdirectories = [];
+// Fonction pour vérifier si le contenu du fichier est encadré par des crochets
+function isFileEnclosedInBrackets(filePath) {
+    // Lire le contenu du fichier
+    const fileContent = fs.readFileSync(filePath, "utf8");
 
-    function exploreDirectory(currentPath) {
-        const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+    // Vérifier si le premier caractère est '[' et le dernier caractère est ']'
+    const isEnclosed =
+        fileContent.trim().startsWith("[") && fileContent.trim().endsWith("]");
 
-        for (const entry of entries) {
-            const fullPath = path.join(currentPath, entry.name);
-            console.log(fullPath);
-
-            if (entry.isDirectory()) {
-                subdirectories.push(fullPath);
-                exploreDirectory(fullPath);
-            }
-        }
-    }
-
-    exploreDirectory(dirPath);
-    return subdirectories;
+    return isEnclosed;
 }
 
 // Exemple d'utilisation
-const directoryPath = "./src";
-const subdirectories = getAllSubdirectories(directoryPath);
-console.log(subdirectories);
+const filePath = "./test.txt";
+const result = isFileEnclosedInBrackets(filePath);
+
+if (result) {
+    console.log("Le fichier est encadré par des crochets.");
+} else {
+    console.log("Le fichier n'est pas encadré par des crochets.");
+}
