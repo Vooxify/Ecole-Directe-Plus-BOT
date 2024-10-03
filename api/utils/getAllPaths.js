@@ -8,6 +8,7 @@ module.exports = (
     dirOnly = true
 ) => {
     const outPath = [];
+    const rawOutPath = [];
     const outFilesPath = [];
     const excludedRouteFiles = [];
     function exploreDirectory(currentPath) {
@@ -30,6 +31,7 @@ module.exports = (
                     );
                 } else {
                     outPath.push(routeConverted);
+                    rawOutPath.push(fullPath);
                     exploreDirectory(fullPath); // call the function to explore under directories (pay attention !!)
                 }
             }
@@ -58,5 +60,7 @@ module.exports = (
 
     exploreDirectory(dirPath);
 
-    return dirOnly ? outPath.sort() : outFilesPath.sort(); // use sort() to sort alphabetically
+    return dirOnly
+        ? { outPath: outPath, rawOutPath: rawOutPath }
+        : outFilesPath.sort(); // use sort() to sort alphabetically
 };
