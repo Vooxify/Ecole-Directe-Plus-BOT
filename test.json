@@ -1,0 +1,20 @@
+{
+    outPath: [
+      '/get_number',
+      '/get_number/under_num',
+      '/get_password',
+      '/testfilebro',
+      '/testgetapi'
+    ],
+    rawOutPath: [
+      '..\\get_number',
+      '..\\get_number\\under_num',
+      '..\\get_password',
+      '..\\testfilebro',
+      '..\\testgetapi'
+    ],
+    filesRequest: {
+      filesPost: { rawPostFiles: [Array], postFiles: [Array] },
+      filesGet: { rawGetFiles: [Array], getFiles: [Array] }
+    }
+  }

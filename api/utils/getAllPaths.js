@@ -5,30 +5,62 @@ module.exports = (
     dirPath,
     excludedDirs = [],
     excludedFiles = [],
-    dirOnly = true
+    dirOnly = true,
+    printExcludedFilesAndPaths = true
 ) => {
+    // const
     const outPath = [];
     const rawOutPath = [];
     const outFilesPath = [];
+    const rawGetFiles = [];
+    const rawPostFiles = [];
     const excludedRouteFiles = [];
-    function exploreDirectory(currentPath) {
+    // functions
+    class Format {
+        // <3
+        livePath(fileOrPath) {
+            return fileOrPath.split("..").pop().replaceAll("\\", "/");
+        }
+        liveFile(fileOrPath) {
+            return fileOrPath.split("\\").pop().slice(0, -3);
+        }
+        files(fileOrPath) {
+            let tempArray = [];
+            fileOrPath.forEach((element) => {
+                tempArray.push(element.split("\\").pop().slice(0, -3));
+            });
+            return tempArray;
+        }
+        paths(fileOrPath) {
+            let tempArray = [];
+            fileOrPath.forEach((element) => {
+                tempArray.push(element.split("..").pop().replaceAll("\\", "/"));
+            });
+            return tempArray;
+        }
+    }
+    // utils
+
+    const format = new Format();
+
+    const exploreDirectory = (currentPath) => {
         const entries = fs.readdirSync(currentPath, { withFileTypes: true });
 
         for (const entry of entries) {
             const fullPath = `${path.join(currentPath, entry.name)}`;
 
-            const routeConverted = fullPath
-                .split("..")
-                .pop()
-                .replaceAll("\\", "/");
+            const routeConverted = format.livePath(fullPath);
             // convert paths/future route
             // ex --> ..\\api\\utils --> /api/utils
 
             if (entry.isDirectory()) {
                 if (excludedDirs.includes(routeConverted)) {
-                    console.log(
-                        `[+] An excluded dir was detected at "${routeConverted}"` // to change this --> edit in function call params
-                    );
+                    printExcludedFilesAndPaths
+                        ? console.log(
+                              // use ternary to manage prints to not have a lot of after calling the function many times
+                              `[+] An excluded dir was detected at "${routeConverted}"` // to change this --> edit in function call params
+                          )
+                        : null;
                 } else {
                     outPath.push(routeConverted);
                     rawOutPath.push(fullPath);
@@ -37,30 +69,55 @@ module.exports = (
             }
 
             if (entry.isFile()) {
-                // console.log(fullPath);
-                const routeFile = fullPath.split("\\").pop().split(".").shift();
-                // get filename without path and extention
-                // ..\hello\testHello\[testfile2].js --> [testfile2]
+                const routeFile = fullPath.split("\\").pop().slice(0, -3);
+                if (
+                    format.liveFile(fullPath).split(".")[0] === "get" // i use format for lisibility
 
+                    /* this/is/full/path/get.file.js -> ["get"] */
+                ) {
+                    rawGetFiles.push(fullPath);
+                }
+                if (format.liveFile(fullPath).split(".")[0] === "post") {
+                    rawPostFiles.push(fullPath);
+                }
                 if (
                     (routeFile.trim().startsWith("[") &&
                         routeFile.trim().endsWith("]")) ||
                     excludedFiles.includes(`${routeFile}.js`) // :-)
                 ) {
+                    // get filename without path and extention
+                    // ..\hello\testHello\[testfile2].js --> [testfile2]
+
                     // most simple to call function but this is little useless
-                    console.log(
-                        `[+] An excluded file "${routeFile}.js" was detected : "${routeConverted}"` // to change this --> edit filename
-                    );
+                    printExcludedFilesAndPaths
+                        ? console.log(
+                              `[+] An excluded file "${routeFile}.js" was detected : "${routeConverted}"` // to change this --> edit filename
+                          )
+                        : null;
                 } else {
                     outFilesPath.push(routeFile); // push if note enclosed
                 }
             }
         }
-    }
+    };
 
     exploreDirectory(dirPath);
 
+    // getFiles.raw =
     return dirOnly
-        ? { outPath: outPath, rawOutPath: rawOutPath }
+        ? {
+              outPath: outPath, // outPath is converted in the reading process
+              rawOutPath: rawOutPath,
+              filesRequest: {
+                  filesPost: {
+                      rawPostFiles: rawPostFiles,
+                      postFiles: format.paths(rawPostFiles),
+                  },
+                  filesGet: {
+                      rawGetFiles: rawGetFiles,
+                      getFiles: format.paths(rawGetFiles),
+                  },
+              },
+          }
         : outFilesPath.sort(); // use sort() to sort alphabetically
 };
