@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const Format = require("./handleFormat");
 
 module.exports = (
     dirPath,
@@ -16,29 +17,7 @@ module.exports = (
     const rawPostFiles = [];
     const excludedRouteFiles = [];
     // functions
-    class Format {
-        // <3
-        livePath(fileOrPath) {
-            return fileOrPath.split("..").pop().replaceAll("\\", "/");
-        }
-        liveFile(fileOrPath) {
-            return fileOrPath.split("\\").pop().slice(0, -3);
-        }
-        files(fileOrPath) {
-            let tempArray = [];
-            fileOrPath.forEach((element) => {
-                tempArray.push(element.split("\\").pop().slice(0, -3));
-            });
-            return tempArray;
-        }
-        paths(fileOrPath) {
-            let tempArray = [];
-            fileOrPath.forEach((element) => {
-                tempArray.push(element.split("..").pop().replaceAll("\\", "/"));
-            });
-            return tempArray;
-        }
-    }
+
     // utils
 
     const format = new Format();
@@ -102,22 +81,26 @@ module.exports = (
     };
 
     exploreDirectory(dirPath);
-
+    const rawFiles = [...rawPostFiles, ...rawGetFiles];
     // getFiles.raw =
     return dirOnly
         ? {
               outPath: outPath, // outPath is converted in the reading process
               rawOutPath: rawOutPath,
+              rawFiles: rawFiles,
               filesRequest: {
                   filesPost: {
                       rawPostFiles: rawPostFiles,
                       postFiles: format.paths(rawPostFiles),
+                      postFilesNumber: rawPostFiles.length,
                   },
                   filesGet: {
                       rawGetFiles: rawGetFiles,
                       getFiles: format.paths(rawGetFiles),
+                      getFilesNumber: rawGetFiles.length,
                   },
               },
+              routeNumber: rawFiles.length,
           }
         : outFilesPath.sort(); // use sort() to sort alphabetically
 };
