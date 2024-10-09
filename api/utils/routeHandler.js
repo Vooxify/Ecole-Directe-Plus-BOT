@@ -38,7 +38,11 @@ const sleep = (ms) => {
 };
 /* --------------------------------- content -------------------------------- */
 
-const handleAPIFunctioning = getAllPaths(apiPath, [""], ["index.js"]); // object with 2 different paths
+const handleAPIFunctioning = getAllPaths(
+    apiPath,
+    ["/create_user", "/visits"],
+    ["index.js"]
+); // object with 2 different paths
 
 const outPath = handleAPIFunctioning?.outPath;
 const rawOutPath = handleAPIFunctioning?.rawOutPath;
@@ -105,6 +109,9 @@ const runApi = async () => {
             format.liveRemoveFileName(element, "post.route.js", "")
         ),
     ];
+    if (routes.length === 0) {
+        console.log("[+] Any routes are registered");
+    }
     for (const element of routes) {
         console.log(
             `[*] Enabled and active route : http://localhost:${PORT}${element}`
