@@ -5,12 +5,13 @@
     "main": "src/index.js",
     "scripts": {
         "dev": "nodemon",
-        "code": "nodemon",
+        "api": "node ./api/utils/index.js",
         "format": "prettier --write \"src/**/*.{js,py,txt}\" \"api/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
     "dependencies": {
+        "@prisma/client": "^5.20.0",
         "axios": "^1.7.2",
         "discord.js": "^14.15.2",
         "dotenv": "^16.4.5",

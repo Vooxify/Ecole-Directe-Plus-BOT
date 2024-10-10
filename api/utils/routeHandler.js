@@ -1,23 +1,23 @@
 /* --------------------------------- modules -------------------------------- */
 
-const path = require("path");
-const fs = require("fs");
-const express = require("express");
 require("dotenv").config({ path: "../../.env" });
+const express = require("express");
 
 /* ---------------------------------- files --------------------------------- */
 
-const getAllPaths = require("./getAllPaths");
 const Format = require("./handleFormat");
-
 const format = new Format();
+const getAllPaths = require("./getAllPaths");
+
+const jsonConfig = require("../config.json"); // important !
 
 /* ------------------------------- statics var ------------------------------ */
 
+const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
-const apiPath = "../";
-const PORT = process.env.PORT;
+
+const apiPath = jsonConfig.api_routes_path;
 const BRAND = `
 
 
@@ -33,15 +33,13 @@ _______  ______   _______    _______  _______  ___
 `;
 
 /* -------------------------------- functions ------------------------------- */
-const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-};
+
 /* --------------------------------- content -------------------------------- */
 
 const handleAPIFunctioning = getAllPaths(
     apiPath,
-    ["/create_user", "/visits"],
-    ["index.js"]
+    jsonConfig.excluded_routes,
+    jsonConfig.excluded_files
 ); // object with 2 different paths
 
 const outPath = handleAPIFunctioning?.outPath;
@@ -69,7 +67,7 @@ const handlePostFiles = () => {
             const postRouteHandler = require(rawFilesPost[p]);
             const convertedPathFilePost = format.liveRemoveFileName(
                 postFiles[p],
-                "post.route.js",
+                jsonConfig.post_route_file_format /* post.route.js */,
                 ""
             );
             activeRoutes.post = convertedPathFilePost; // add this to see witch routes are actives
@@ -87,7 +85,7 @@ const handleGetFiles = () => {
             const getRouteHandler = require(rawFilesGet[g]);
             const convertedPathFileGet = format.liveRemoveFileName(
                 getFiles[g],
-                "get.route.js",
+                jsonConfig.get_route_file_format /* get.route.js */,
                 ""
             );
             activeRoutes.get = convertedPathFileGet; // add this to see witch routes are actives
@@ -103,10 +101,18 @@ const runApi = async () => {
     await Promise.all([handleGetFiles(), handlePostFiles()]);
     const routes = [
         ...getFiles.map((element) =>
-            format.liveRemoveFileName(element, "get.route.js", "")
+            format.liveRemoveFileName(
+                element,
+                jsonConfig.get_route_file_format,
+                ""
+            )
         ),
         ...postFiles.map((element) =>
-            format.liveRemoveFileName(element, "post.route.js", "")
+            format.liveRemoveFileName(
+                element,
+                jsonConfig.post_route_file_format,
+                ""
+            )
         ),
     ];
     if (routes.length === 0) {
@@ -116,13 +122,14 @@ const runApi = async () => {
         console.log(
             `[*] Enabled and active route : http://localhost:${PORT}${element}`
         );
-        await sleep(700); // ms
     }
-    await sleep(950);
-    console.log(`[#] API is running at http://localhost:${PORT}`);
+};
+const listenApi = () => {
+    app.listen(PORT, async () => {
+        console.log(BRAND);
+        console.log(`[#] API is running at http://localhost:${PORT}`);
+        runApi();
+    });
 };
 
-app.listen(PORT, async () => {
-    console.log(BRAND);
-    runApi();
-});
+module.exports = { listenApi };

@@ -1,0 +1,7 @@
+{
+    "api_routes_path": "../",
+    "get_route_file_format": "get.route.js",
+    "post_route_file_format": "post.route.js",
+    "excluded_routes": [],
+    "excluded_files": ["index.js"]
+}
