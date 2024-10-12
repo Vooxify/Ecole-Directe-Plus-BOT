@@ -18,21 +18,17 @@ As I mentioned earlier, you need to create a directory in the `./api/` folder. T
 -   `"post.route.js"` for the POST method
 -   `"get.route.js"` for the GET method
 
-> \> **NOTE**: When you create routes, you can also create subfolders, and it will work as well (as long as there is a file inside xD). You can access it here: **example:** `./api_interface/api/your/subfolder/get.route.js` > `http://localhost:XXXX/api/your/subfolder`
+> \> **NOTE**: When you create routes, you can also create subfolders, and it will work as well (as long as there is a folder inside xD). You can access it here:
+> **example:** `./api_interface/api/your/subfolder/get.route.js` > `http://localhost:XXXX/api/your/subfolder`
+> You need to create all routes in the `/api/` folder.
 
 ## How to use the API basically?
 
 To start, you've created file(s)—good! Now, how do you add logic to the API route? Simple! Export a function like this:
 
 ```javascript
-const protected = false; /* or true */
-const route = (req, res) => {
-    /* execute code here */
-};
-
-module.exports = {
-    route,
-    isProtected: () => protected,
+module.exports = /*async*/ (req, res) => {
+    /* Your code here */
 };
 ```
 
