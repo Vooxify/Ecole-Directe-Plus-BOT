@@ -4,6 +4,7 @@ const Format = require("./handleFormat");
 const getAllPaths = require("./getAllPaths");
 
 const jsonConfig = require("../config.json"); // important !
+
 /* ------------------------------- middleware ------------------------------- */
 
 const format = new Format();
@@ -20,15 +21,7 @@ app.use(express.json());
  */
 process.chdir(__dirname);
 
-/* -------------------------------- functions ------------------------------- */
-
-/* --------------------------------- process -------------------------------- */
-
-// process.on("exit", (code) => {
-//     console.log(`The process is about to end with code: ${code}`);
-// });
-
-/* --------------------------------- content -------------------------------- */
+/* ------------------------------- statics var ------------------------------ */
 
 const handleAPIFunctioning = getAllPaths(
     jsonConfig.api_routes_path,
@@ -55,9 +48,11 @@ const getFilesNumber =
 const routeNumber = handleAPIFunctioning?.routeNumber;
 const activeRoutes = { post: null, get: null };
 
+/* --------------------------------- content -------------------------------- */
+
 // print the path object returned in "getAllPaths.js"
 
-// console.dir(handleAPIFunctioning, { depth: null });
+console.dir(handleAPIFunctioning, { depth: null });
 
 // review api system
 const handlePostFiles = () => {
@@ -77,20 +72,19 @@ const handlePostFiles = () => {
         }
     }
 };
-
 const handleGetFiles = () => {
     for (let g = 0; g < getFilesNumber; g++) {
         try {
             const getRouteHandler = require(rawFilesGet[g]);
+
             const convertedPathFileGet = format.liveRemoveFileName(
                 getFiles[g],
-                jsonConfig.get_route_file_format /* get.route.js */,
+                jsonConfig.get_route_file_format,
                 ""
             );
-
             app.get(convertedPathFileGet, getRouteHandler);
         } catch (error) {
-            console.log(`[!] Specific error detected : ${error}`);
+            console.log(`[!] Error while loading GET route: ${error}`);
             process.exit(1);
         }
     }

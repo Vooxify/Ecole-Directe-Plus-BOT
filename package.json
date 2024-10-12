@@ -5,7 +5,7 @@
     "main": "api_interface/utils/index.js   ",
     "scripts": {
         "dev": "nodemon",
-        "api": "node ./api/utils/index.js",
+        "api": "node ./api_interface/index.js",
         "format": "prettier --write \"api/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",

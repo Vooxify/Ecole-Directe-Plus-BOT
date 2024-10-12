@@ -1,7 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const express = require("express");
+const router = express.Router();
 
-module.exports = async (req, res) => {
+router.get("/api/increment_visits/", async (req, res) => {
     try {
         const compteur = await prisma.counter.upsert({
             where: { id: 1 },
@@ -16,4 +18,6 @@ module.exports = async (req, res) => {
             error: "Error !",
         });
     }
-};
+});
+
+module.exports = router;
