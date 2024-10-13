@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const express = require("express");
 const router = express.Router();
 
-router.get("/api/increment_visits/", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const compteur = await prisma.counter.upsert({
             where: { id: 1 },

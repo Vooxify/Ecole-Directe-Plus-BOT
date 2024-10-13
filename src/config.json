@@ -1,8 +1,7 @@
 {
     "api_routes_path": "../api/",
     "env_path": "../../.env",
-    "get_route_file_format": "get.route.js",
-    "post_route_file_format": "post.route.js",
+    "route_file_format": "route.js",
     "excluded_routes": [],
     "excluded_files": ["index.js"],
     "routetype": { "post": "POST", "get": "GET" }

@@ -4,7 +4,7 @@
     "description": "The api for Ecole Directe Plus website",
     "main": "api_interface/utils/index.js   ",
     "scripts": {
-        "dev": "nodemon",
+        "dev": "nodemon --watch src --ext js,json --ignore node_modules --exec node src/index.js",
         "api": "node ./api_interface/index.js",
         "format": "prettier --write \"api/**/*.{js,py,txt}\""
     },

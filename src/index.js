@@ -1,13 +1,11 @@
 const jsonConfig = require("./config.json"); // important !
 const Format = require("./utils/handleFormat");
 const {
-    handleGetFiles,
-    handlePostFiles,
+    handleFiles,
     activeRoutes,
     routeNumber,
     app,
-    postFiles,
-    getFiles,
+    files,
 } = require("./utils/routeHandler");
 
 /* ------------------------------- middleware ------------------------------- */
@@ -58,45 +56,28 @@ const sleep = async (ms) => {
 
 const runApi = async () => {
     if (!Number(PORT)) {
-        process.exit(524);
+        process.exit(524); // Exit if the PORT is not defined
     }
 
     console.log(BRAND);
-    await Promise.all([handleGetFiles(), handlePostFiles()]);
-    activeRoutes.post = [
-        ...postFiles.map((element) =>
-            format.liveRemoveFileName(
-                element,
-                jsonConfig.post_route_file_format,
-                ""
-            )
-        ),
-    ];
-    activeRoutes.get = [
-        ...getFiles.map((element) =>
-            format.liveRemoveFileName(
-                element,
-                jsonConfig.get_route_file_format,
-                ""
-            )
-        ),
-    ];
+    handleFiles();
 
     if (routeNumber === 0) {
-        console.log("[+] Any routes are registered");
-    }
-    for (let [key, value] of Object.entries(activeRoutes)) {
-        const routeType = jsonConfig.routetype[key];
-
-        if (routeType) {
-            console.log(`\n[*] Active ${routeType} routes :\n`);
-            value.forEach((route) => {
-                console.log(
-                    `   "http://localhost:${PORT}${route}"  >>>  "${route}"`
-                );
-            });
+        console.log("[+] No routes are registered");
+    } else {
+        console.log(`\n[*] Active routes:\n`);
+        console.log(activeRoutes);
+        for (let route of activeRoutes) {
+            if (route && route.length > 0) {
+                route.forEach((route) => {
+                    console.log(
+                        `   "http://localhost:${PORT}${route}"  >>>  "${route}"`
+                    );
+                });
+            }
         }
     }
+
     await sleep(750);
     console.log(
         `\n
