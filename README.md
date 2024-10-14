@@ -13,10 +13,7 @@ Here, I will explain how the API works for safe usage. The API is well-designed 
 
 ## How to create routes?
 
-As I mentioned earlier, you need to create a directory in the `./api/` folder. Then, create a file with the following names based on the method you need:
-
--   `"post.route.js"` for the POST method
--   `"get.route.js"` for the GET method
+As I mentioned earlier, you need to create a directory in the `./api/` folder.
 
 > \> **NOTE**: When you create routes, you can also create subfolders, and it will work as well (as long as there is a folder inside xD). You can access it here:
 > **example:** `./api_interface/api/your/subfolder/get.route.js` > `http://localhost:XXXX/api/your/subfolder`
