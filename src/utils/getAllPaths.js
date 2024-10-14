@@ -45,8 +45,7 @@ module.exports = (
             }
 
             if (entry.isFile()) {
-                const routeFile = fullPath.split("\\").pop().slice(0, -3);
-
+                const routeFile = format.liveFile(fullPath);
                 if (
                     (routeFile.trim().startsWith("[") &&
                         routeFile.trim().endsWith("]")) ||
@@ -55,14 +54,12 @@ module.exports = (
                     // get filename without path and extention
                     printExcludedFilesAndPaths
                         ? console.log(
-                              `[+] An excluded file "${routeFile}.js" was detected : "${routeConverted}"`
+                              `[+] An excluded file "${routeFile}.js" was detected at : "${routeConverted}"`
                           )
                         : null;
                 } else {
                     rawFiles.push(fullPath); // push all files together
                     outFilesPath.push(routeFile); // push if not enclosed
-                    console.log(fullPath);
-                    console.log(routeFile);
                 }
             }
         }

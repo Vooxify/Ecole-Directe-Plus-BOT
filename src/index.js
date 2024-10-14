@@ -7,11 +7,6 @@ const {
     app,
     files,
 } = require("./utils/routeHandler");
-
-/* ------------------------------- middleware ------------------------------- */
-
-const format = new Format();
-
 /* --------------------------------- modules -------------------------------- */
 
 require("dotenv").config({ path: jsonConfig.env_path });
@@ -65,8 +60,7 @@ const runApi = async () => {
     if (routeNumber === 0) {
         console.log("[+] No routes are registered");
     } else {
-        console.log(`\n[*] Active routes:\n`);
-        console.log(activeRoutes);
+        console.log(`[*] Active routes:\n`);
         for (let route of activeRoutes) {
             if (route && route.length > 0) {
                 route.forEach((route) => {
