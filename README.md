@@ -28,21 +28,9 @@ To start, you've created file(s)—good! Now, how do you add logic to the API ro
 const express = require("express");
 const router = express.Router();
 
-// Import middleware
-const middleware = require("./middleware");
-
 // Define route with router
 router.get("/", async (req, res) => {
-    try {
-        /* Use try-catch for safety */
-        // Your code here
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Error!",
-            // Handle errors here
-        });
-    }
+    /* You're logic here */
 });
 
 module.exports = router;
