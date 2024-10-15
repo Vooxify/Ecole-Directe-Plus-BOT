@@ -3,9 +3,7 @@ const prisma = new PrismaClient();
 const express = require("express");
 const router = express.Router();
 
-const { authenticateToken } = require("../../middlewares/checkJsonWebToken");
-
-router.get("/", authenticateToken, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const compteur = await prisma.counter.upsert({
             where: { id: 1 },

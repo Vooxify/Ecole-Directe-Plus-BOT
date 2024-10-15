@@ -2,12 +2,9 @@
 
 const Format = require("./handleFormat");
 const getAllPaths = require("./getAllPaths");
+const cors = require("cors");
 
 const jsonConfig = require("../config.json"); // important !
-
-/* ------------------------------- middleware ------------------------------- */
-
-const format = new Format();
 
 /* --------------------------------- modules -------------------------------- */
 
@@ -22,6 +19,10 @@ app.use(express.json());
  */
 process.chdir(__dirname);
 
+/* ------------------------------- middleware ------------------------------- */
+
+const format = new Format();
+
 /* ------------------------------- statics var ------------------------------ */
 
 const handleAPIFunctioning = getAllPaths(
@@ -35,6 +36,8 @@ const files = handleAPIFunctioning?.files;
 const fileNumber = handleAPIFunctioning?.fileNumber;
 const routeNumber = handleAPIFunctioning?.routeNumber;
 const activeRoutes = [];
+
+/* -------------------------------- functions ------------------------------- */
 
 /* --------------------------------- content -------------------------------- */
 
@@ -54,7 +57,7 @@ const handleFiles = () => {
                 ""
             );
 
-            app.use(convertedPathFile, routeHandler);
+            app.use(convertedPathFile, routeHandler, cors());
         } catch (error) {
             console.log(`[!] Specific error detected : ${error}`);
             process.exit(1);

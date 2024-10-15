@@ -3,12 +3,8 @@ const fs = require("fs");
 require("dotenv").config({ path: "../../.env" });
 
 const secret = fs.readFileSync("../../.certs/private.pem", "utf-8");
-const generateAndSignToken = (req1, res) => {
-    const payload = {
-        userId: 456,
-        userName: "Roger",
-        group: "authUser",
-    };
+const generateAndSignToken = (req, res, next) => {
+    const payload = { Pay: "LOAD" };
 
     const signOptions = {
         expiresIn: process.env.JWT_TIMING,
@@ -17,5 +13,6 @@ const generateAndSignToken = (req1, res) => {
 
     const jsonWebToken = jwt.sign(payload, secret, signOptions);
     res.json({ token: jsonWebToken });
+    next();
 };
 module.exports = { generateAndSignToken };

@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
 const {
-    generateAndSignToken,
-} = require("../../../middlewares/generateJsonWebToken");
+    checkConnection,
+} = require("../../../middlewares/auth/checkConnection");
 
-router.get("/", generateAndSignToken, (req, res) => {
-    res.json({ yo: "man" });
-});
+const urlencodedParser = express.urlencoded({ extended: false });
+
+router.post("/", urlencodedParser, checkConnection, async (req, res) => {});
+
 module.exports = router;

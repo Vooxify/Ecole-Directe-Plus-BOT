@@ -26,9 +26,10 @@ enum Group {
 
 model APIUser {
   id         Int      @id @default(autoincrement())
+  password   String
   email      String?
   discordTag String   @unique
-  name       String
+  username   String   @unique
   group      Group
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
