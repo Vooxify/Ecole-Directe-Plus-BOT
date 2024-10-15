@@ -13,13 +13,10 @@ Here, I will explain how the API works for safe usage. The API is well-designed 
 
 ## How to create routes?
 
-As I mentioned earlier, you need to create a directory in the `./api/` folder. Then, create a file with the following names based on the method you need:
-
--   `"post.route.js"` for the POST method
--   `"get.route.js"` for the GET method
+As I mentioned earlier, you need to create a directory in the `./api/` folder. At the end create the file `route.js`.
 
 > \> **NOTE**: When you create routes, you can also create subfolders, and it will work as well (as long as there is a folder inside xD). You can access it here:
-> **example:** `./api_interface/api/your/subfolder/get.route.js` > `http://localhost:XXXX/api/your/subfolder`
+> **example:** `./src/api/your/subfolder/route.js` > `http://localhost:XXXX/api/your/subfolder`
 > You need to create all routes in the `/api/` folder.
 
 ## How to use the API basically?
@@ -31,21 +28,9 @@ To start, you've created file(s)—good! Now, how do you add logic to the API ro
 const express = require("express");
 const router = express.Router();
 
-// Import middleware
-const middleware = require("./middleware");
-
 // Define route with router
 router.get("/", async (req, res) => {
-    try {
-        /* Use try-catch for safety */
-        // Your code here
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Error!",
-            // Handle errors here
-        });
-    }
+    /* You're logic here */
 });
 
 module.exports = router;
