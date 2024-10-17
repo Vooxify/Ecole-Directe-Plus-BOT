@@ -52,10 +52,10 @@ If you want to protect a few routes, follow these steps:
 Here's the syntax:
 
 ```javascript
-const middleware = require("./middleware");
+const { checkUserConnection } = require("./path/to/checkUserConnection");
 
 // Past the middleware function (! without "()" !)
-router.get("/", middleware, async (req, res) => {
+router.get("/", checkUserConnection, async (req, res) => {
     /* ... */
 });
 
@@ -63,3 +63,10 @@ module.exports = router;
 ```
 
 Afterwards, check out the **[official documentation](https://expressjs.com/fr/)** of the EXPRESS module for more details.
+
+## IMPORTANT Information
+
+The middleware is really well implemented.
+
+-   For any request where you use the middleware, you need to pass an authorization header with the format: `"Bearer <YOUR SECRET TOKEN>"`. You won't be able to access the route if you don't have a valid token.
+-   To get the token, it's simple: you just need to log in with your `username` and `password`, which you previously registered in the database.

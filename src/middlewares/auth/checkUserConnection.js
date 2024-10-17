@@ -23,7 +23,7 @@ const checkUserConnection = async (req, res, next) => {
 
                 !authorizationHeader
                     ? res.status(401).json({
-                          error: "Please pass token and not your connection informations or log-in",
+                          error: "Please pass token and not your connection informations or log-in to get token",
                       })
                     : handleToken(tokenHeader, req, res, next);
             } catch (error) {
