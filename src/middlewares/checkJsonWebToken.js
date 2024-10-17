@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 require("dotenv").config({ path: "../../.env" });
 
-const public = fs.readFileSync("../../.certs/public.pem", "utf-8");
+const publicK = fs.readFileSync("../../.certs/public.pem", "utf-8");
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
             .json({ message: "Accès refusé : token manquant" });
     }
 
-    jwt.verify(token, public, { algorithms: ["RS256"] }, (err, decoded) => {
+    jwt.verify(token, publicK, { algorithms: ["RS256"] }, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: "Token Invalide !" });
         }

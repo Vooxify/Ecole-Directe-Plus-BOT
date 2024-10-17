@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const secret = fs.readFileSync("../../.certs/public.pem", "utf-8");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
 const verifyToken = async (authToken) => {
     try {

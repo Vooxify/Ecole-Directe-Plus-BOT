@@ -1,6 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-const bcrypt = require("bcrypt");
 const express = require("express");
 const urlencodedParser = express.urlencoded({ extended: false });
 const { verifyToken } = require("../../middlewares/auth/utils/verifyToken");
