@@ -2,8 +2,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const express = require("express");
 const router = express.Router();
+const {
+    checkUserConnection,
+} = require("../../middlewares/auth/checkUserConnection");
 
-router.get("/", async (req, res) => {
+router.get("/", checkUserConnection, async (req, res) => {
     try {
         const compteur = await prisma.counter.upsert({
             where: { id: 1 },
