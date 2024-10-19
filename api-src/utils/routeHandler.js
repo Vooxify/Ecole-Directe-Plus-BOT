@@ -3,7 +3,6 @@
 const Format = require("./handleFormat");
 const getAllPaths = require("./getAllPaths");
 const cors = require("cors");
-const compression = require("compression");
 
 const jsonConfig = require("../config.json"); // important !
 

@@ -1,5 +1,4 @@
 const jsonConfig = require("./config.json"); // important !
-const Format = require("./utils/handleFormat");
 const {
     handleFiles,
     activeRoutes,
