@@ -1,7 +1,7 @@
 // import utility function to get channel options
 const { getChannelOptions } = require("../../utils/getChannelOptions");
-const { get_json_stat_channel_id } = require("./tools/get_json_content");
-
+// const { get_json_stat_channel_id } = require("./tools/get_json_content");
+// MY BAD
 // function to extract statistics from a given message
 function getStat(msg, inDevArray, currentlyInDevloppementArray) {
     // define base information to search in the message
