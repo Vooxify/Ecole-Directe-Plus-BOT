@@ -44,7 +44,7 @@ model AnonymousUserVisit {
 
 model DiscordServer {
   id        Int    @id @default(autoincrement())
-  ChannelId String
+  discordChannelID String
 }
 
 model Counter {

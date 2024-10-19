@@ -6,7 +6,7 @@ const {
     checkUserConnection,
 } = require("../../middlewares/auth/checkUserConnection");
 
-router.get("/", checkUserConnection, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const compteur = await prisma.counter.upsert({
             where: { id: 1 },

@@ -11,7 +11,7 @@
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
     "dependencies": {
-        "@prisma/client": "^5.20.0",
+        "@prisma/client": "^5.21.1",
         "axios": "^1.7.2",
         "bcrypt": "^5.1.1",
         "cors": "^2.8.5",
@@ -27,6 +27,6 @@
         "eslint": "^9.3.0",
         "globals": "^15.3.0",
         "prettier": "^3.3.3",
-        "prisma": "^5.20.0"
+        "prisma": "^5.21.1"
     }
 }
