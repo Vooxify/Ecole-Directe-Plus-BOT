@@ -1,0 +1,25 @@
+{
+    "global": {
+        "mensual_users": 256,
+        "positive_feedbacks": 12
+    },
+
+    "progression": 27,
+
+    "features_in_devloppement": {
+        "count": 2,
+        "name": [
+            "La messagerie",
+            "L'emploi du temps"
+        ]
+    },
+
+    "modifications": {
+        "count": 1,
+        "content": {
+            "commit": "Add border size to the main page",
+            "author": "Someone"
+        }
+    }
+
+}
