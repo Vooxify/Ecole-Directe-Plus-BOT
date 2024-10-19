@@ -3,19 +3,6 @@ const fs = require("fs");
 
 const JSON_F = "./src/commands/misc/config/channel_id.json"; // set json file path
 
-const edit_json_file = (new_id) => {
-    fs.readFile(JSON_F, "utf-8", (error, raw) => {
-        // Open file
-        if (error) return console.log(error); // errors
-
-        let data = JSON.parse(raw); // json to js object
-        data.stat_channel_id = new_id; // create or edit value in object
-        fs.writeFile(JSON_F, JSON.stringify(data), (error) => {
-            // write js object to json in file
-            if (error) return console.log(error); // errors
-        });
-    });
-};
 module.exports = {
     name: "setchannel",
     description: "set channel id",
@@ -28,14 +15,14 @@ module.exports = {
         },
     ],
     callback: async (client, interraction) => {
-        const stat_channel_id = // get channel id param
-            interraction.options._hoistedOptions[0].value; /* See bottom (1) */
-        edit_json_file(stat_channel_id);
-        const channel_stat = await client.channels.fetch(stat_channel_id); // magic ;-)
-        interraction.reply({
-            content: `:white_check_mark:   The statistics channel set to ${channel_stat}`,
-            ephemeral: true,
-        });
+        // const stat_channel_id = // get channel id param
+        //     interraction.options._hoistedOptions[0].value; /* See bottom (1) */
+        // edit_json_file(stat_channel_id);
+        // const channel_stat = await client.channels.fetch(stat_channel_id); // magic ;-)
+        // interraction.reply({
+        //     content: `:white_check_mark:   The statistics channel set to ${channel_stat}`,
+        //     ephemeral: true,
+        // });
     },
 };
 

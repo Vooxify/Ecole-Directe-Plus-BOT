@@ -1,3 +1,5 @@
 .env
 eslint.config.mjs
 test.js
+./certs/private.pem
+./certs/public.pem

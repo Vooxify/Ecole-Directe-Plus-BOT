@@ -2,14 +2,15 @@
     "name": "ecole-directe-plus-bot",
     "version": "1.0.0",
     "description": "The bot for Ecole Directe Plus website",
-    "main": "src/index.js",
+    "main": "discord_bot-src/index.js",
     "scripts": {
         "dev": "nodemon",
-        "format": "prettier --write \"src/**/*.{js,py,txt}\""
+        "format": "prettier --write \"discord_bot-src/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
     "dependencies": {
+        "@prisma/client": "^5.21.1",
         "axios": "^1.7.2",
         "discord.js": "^14.15.2",
         "dotenv": "^16.4.5",
