@@ -4,8 +4,8 @@
     "description": "The api for Ecole Directe Plus website",
     "main": "api_interface/utils/index.js   ",
     "scripts": {
-        "dev": "nodemon --watch src --ext js,json --ignore node_modules --exec node src/index.js",
-        "api": "node ./src/index.js",
+        "dev": "nodemon --watch src --ext js,json --ignore node_modules --exec node api-src/index.js",
+        "api": "node ./api-src/index.js",
         "format": "prettier --write \"api/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",
