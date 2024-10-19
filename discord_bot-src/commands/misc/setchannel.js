@@ -1,8 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const fs = require("fs");
 
-const JSON_F = "./src/commands/misc/config/channel_id.json"; // set json file path
-
 module.exports = {
     name: "setchannel",
     description: "set channel id",

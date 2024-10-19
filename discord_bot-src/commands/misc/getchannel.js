@@ -1,7 +1,4 @@
 const { DiscordAPIError } = require("discord.js");
-const { get_json_stat_channel_id } = require("./tools/get_json_content");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
 module.exports = {
     name: "getchannel",

@@ -10,7 +10,6 @@
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
     "dependencies": {
-        "@prisma/client": "^5.21.1",
         "axios": "^1.7.2",
         "discord.js": "^14.15.2",
         "dotenv": "^16.4.5",
