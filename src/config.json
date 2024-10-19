@@ -3,6 +3,5 @@
     "env_path": "../../.env",
     "route_file_format": "route.js",
     "excluded_routes": [],
-    "excluded_files": ["index.js"],
-    "routetype": { "post": "POST", "get": "GET" }
+    "excluded_files": ["index.js"]
 }

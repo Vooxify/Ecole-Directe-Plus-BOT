@@ -38,15 +38,10 @@ const fileNumber = handleAPIFunctioning?.fileNumber;
 const routeNumber = handleAPIFunctioning?.routeNumber;
 const activeRoutes = [];
 
-/* -------------------------------- functions ------------------------------- */
-
 /* --------------------------------- content -------------------------------- */
 
-// print the path object returned in "getAllPaths.js"
+// console.dir(handleAPIFunctioning, { depth: null }); /* to console log the entire object */
 
-// console.dir(handleAPIFunctioning, { depth: null });
-
-// Review API system
 const handleFiles = () => {
     for (let i = 0; i < fileNumber; i++) {
         try {
@@ -70,6 +65,8 @@ const handleFiles = () => {
         )
     );
 };
+
+/* --------------------------------- export --------------------------------- */
 
 module.exports = {
     handleFiles,

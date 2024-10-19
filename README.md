@@ -70,3 +70,91 @@ The middleware is really well implemented.
 
 -   For any request where you use the middleware, you need to pass an authorization header with the format: `"Bearer <YOUR SECRET TOKEN>"`. You won't be able to access the route if you don't have a valid token.
 -   To get the token, it's simple: you just need to log in with your `username` and `password`, which you previously registered in the database.
+
+# Configure Project
+
+To start, you need a `.env` file at the root of your project clone. You need to add these values in your `.env` file:
+
+```.env
+TOKEN=<YOUR DISCORD BOT TOKEN>
+PORT=<YOUR API LISTENING PORT>
+DATABASE_URL="<YOUR DATABASE LINK>"
+JWT_TIMING=<YOUR JWT TIMING, e.g., 1h>
+```
+
+Next, ensure you have the same `schema.prisma` structure as below:
+
+```prisma
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// ----------------------------- Database Config ---------------------------- //
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------- Database Content ---------------------------- //
+
+enum Group {
+  USER
+  AUTHUSER
+  NOTAUTHUSER
+}
+
+model APIUser {
+  id          Int      @id @default(autoincrement())
+  password    String
+  email       String?
+  discordTag  String   @unique
+  username    String   @unique
+  group       Group
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([email])
+}
+
+model AnonymousUserVisit {
+  id                     Int @id @default(autoincrement())
+  EcoleDirectePlusUserId Int @unique
+}
+
+model Counter {
+  id     Int  @id @default(autoincrement())
+  count  Int  @default(0)
+}
+```
+
+Once you have all the files set up as above, you need to generate your private and public keys. Here's how to proceed:
+
+1. Open a new Terminal window in your `.certs` folder.
+2. Use your preferred tool (SSH-KeyGen or OpenSSL).
+3. To generate keys, you can use either **OpenSSL** or **ssh-keygen**:
+
+    ### With OpenSSL:
+
+    - Generate the private key:  
+      `openssl genrsa -out private.pem 4096`
+    - Generate the public key from the private key:  
+      `openssl rsa -in private.pem -pubout -out public.pem`
+        > **Note**: Make sure to name them `private.pem` and `public.pem` and use the PEM format.
+
+    ### With ssh-keygen:
+
+    - Generate the private key:  
+      `ssh-keygen -t rsa -b 4096 -m PEM -f private.pem`
+    - Generate the public key:  
+       `ssh-keygen -f private.pem -e -m PEM > public.pem`
+        > **Note**: Make sure the keys are saved as `private.pem` and `public.pem`.
+
+Now you are able to lunch API and log in

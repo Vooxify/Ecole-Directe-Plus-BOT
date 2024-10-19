@@ -2,6 +2,8 @@ const express = require("express");
 const urlencodedParser = express.urlencoded({ extended: false });
 const { verifyToken } = require("../../middlewares/auth/utils/verifyToken");
 
+/* -------------------------------- function -------------------------------- */
+
 const handleToken = async (authToken, req, res, next) => {
     const payload = await verifyToken(authToken);
 
@@ -10,6 +12,8 @@ const handleToken = async (authToken, req, res, next) => {
     }
     next();
 };
+
+/* -------------------------------- content -------------------------------- */
 
 const checkUserConnection = async (req, res, next) => {
     try {
@@ -34,5 +38,6 @@ const checkUserConnection = async (req, res, next) => {
         return res.status(500).json({ error: error });
     }
 };
+/* --------------------------------- export --------------------------------- */
 
 module.exports = { checkUserConnection };

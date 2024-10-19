@@ -3,23 +3,25 @@ const path = require("path");
 const Format = require("./handleFormat");
 
 module.exports = (
+    /* ------------------------------- parameters ------------------------------- */
     dirPath,
     excludedDirs = [],
     excludedFiles = [],
     dirOnly = true,
     printExcludedFilesAndPaths = true
 ) => {
-    // const
+    /* ------------------------------- statics var ------------------------------ */
+
     const outPath = [];
     const rawOutPath = [];
     const outFilesPath = [];
     const rawFiles = [];
-    const excludedRouteFiles = [];
-    // functions
 
-    // utils
+    /* ----------------------------------- obj ---------------------------------- */
 
     const format = new Format();
+
+    /* -------------------------------- content -------------------------------- */
 
     const exploreDirectory = (currentPath) => {
         const entries = fs.readdirSync(currentPath, { withFileTypes: true });
@@ -50,6 +52,7 @@ module.exports = (
                     (routeFile.trim().startsWith("[") &&
                         routeFile.trim().endsWith("]")) ||
                     excludedFiles.includes(`${routeFile}.js`)
+                    // exclude file with "[route].js"
                 ) {
                     // get filename without path and extention
                     printExcludedFilesAndPaths
@@ -64,7 +67,7 @@ module.exports = (
             }
         }
     };
-
+    // repeat to get all files in all folder / subfolders
     exploreDirectory(dirPath);
 
     return dirOnly
@@ -77,4 +80,3 @@ module.exports = (
           }
         : outFilesPath.sort(); // use sort() to sort alphabetically
 };
-("");

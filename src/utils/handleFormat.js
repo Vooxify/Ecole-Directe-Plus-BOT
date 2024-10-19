@@ -6,6 +6,9 @@ console.log(
     `[*] Active running system : ${platform.charAt(0).toUpperCase() + platform.slice(1)}`
 );
 
+// this object is really usefull beacause it allows to format path / files / files name
+// add fonction if necessary
+
 class Format {
     // <3
     livePath(fileOrPath) {
@@ -60,4 +63,7 @@ class Format {
         return fileOrPath.replace(charReplace, charReplaced);
     }
 }
+
+/* --------------------------------- export --------------------------------- */
+
 module.exports = Format;

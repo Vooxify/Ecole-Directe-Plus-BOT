@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const secret = fs.readFileSync("../../.certs/public.pem", "utf-8");
 
+/* -------------------------------- content -------------------------------- */
+
 const verifyToken = async (authToken) => {
     try {
         const decoded = jwt.verify(authToken, secret);
@@ -41,5 +43,7 @@ const verifyToken = async (authToken) => {
         }
     } // return payload or null
 };
+
+/* --------------------------------- export --------------------------------- */
 
 module.exports = { verifyToken };
