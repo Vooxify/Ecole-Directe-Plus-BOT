@@ -1,0 +1,6 @@
+{
+    "watch": ["api_interface"],
+    "ext": "js,json",
+    "ignore": ["node_modules"],
+    "exec": "node ./api_interface/index.js"
+}

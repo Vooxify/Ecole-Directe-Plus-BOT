@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// ----------------------------- database config ---------------------------- //
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------- database content ---------------------------- //
+
+enum Group {
+  USER
+  AUTHUSER
+  NOTAUTHUSER
+}
+
+model APIUser {
+  id          Int      @id @default(autoincrement())
+  password    String
+  email       String?
+  discordTag  String   @unique
+  username    String   @unique
+  group       Group
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([email])
+}
+
+model AnonymousUserVisit {
+  id                     Int @id @default(autoincrement())
+  EcoleDirectePlusUserId Int @unique
+}
+
+model Counter {
+  id     Int  @id @default(autoincrement())
+  count  Int  @default(0)
+}
