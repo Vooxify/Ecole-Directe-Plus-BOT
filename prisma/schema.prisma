@@ -37,11 +37,15 @@ model APIUser {
   @@unique([email])
 }
 
-model AnonymousUserVisit {
+model AnonymousUser {
   id                     Int @id @default(autoincrement())
   EcoleDirectePlusUserId Int @unique
+  date                   Int
 }
-
+model DaylyVisits {
+  id    Int @id @default(autoincrement())
+  count Int
+}
 model DiscordServer {
   id        Int    @id @default(autoincrement())
   discordChannelID String

@@ -20,38 +20,65 @@ const expModulary = (a, b, p) => {
 
 router.post("/", async (req, res) => {
     const id = !req.body.id ? null : Number(req.body.id);
+    if (!id) {
+        return res.status(400).json({
+            error: "Your request is invalid, need to pass id",
+        });
+    }
     const cryptedId = expModulary(
-        id,
-        14900 + Number(new Date().getFullYear()),
-        Number(new Date().getFullYear()) * 7
+        id, // request id
+        14900 + Number(new Date().getFullYear()), // random values
+        Number(new Date().getFullYear()) * 7 // random values
     );
 
-    const currentDate = new Date();
-
-    // Get the current day of the month
-    const dayOfMonth = currentDate.getDate();
-
+    const dayOfMonth = new Date().getDate();
     try {
-        await prisma.anonymousUserVisit.create({
+        const anUser = await prisma.anonymousUser.findFirst();
+
+        if (anUser.date !== dayOfMonth) {
+            const lastVisit = await prisma.anonymousUser.findFirst({
+                orderBy: {
+                    id: "desc",
+                },
+            });
+
+            await prisma.daylyVisits.create({
+                data: {
+                    count: lastVisit.id,
+                },
+            });
+            // get Supabase table name with schlag SQL inline :)
+            const result =
+                await prisma.$queryRaw`SELECT pg_get_serial_sequence('"AnonymousUser"', 'id') as seqname`;
+            const sequenceName = result[0].seqname;
+            // when we change date, id is reset to 1
+            await prisma.$executeRawUnsafe(
+                `ALTER SEQUENCE ${sequenceName} RESTART WITH 1`
+            );
+            await prisma.anonymousUser.deleteMany();
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error: `Unexpected error: ${error}`,
+        });
+    }
+    try {
+        await prisma.anonymousUser.create({
             data: {
                 EcoleDirectePlusUserId: cryptedId,
+                date: dayOfMonth,
             },
         });
-        res.json({
-            result: cryptedId,
-            time: dayOfMonth,
-        });
+        return res.json();
     } catch (error) {
         if (error.code === "P2002") {
             // Handle unique constraint error (duplicate entry)
 
-            res.status(409).json({
-                error: "This user has already been registered.",
-            });
+            return res.status(801).json(); // already connected today
         } else {
             // Handle other errors
 
-            res.status(500).json({
+            return res.status(500).json({
                 error: "An unexpected error occurred.",
             });
         }
