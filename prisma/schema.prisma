@@ -25,7 +25,7 @@ enum Group {
 }
 
 model APIUser {
-  id          Int      @id @default(autoincrement())
+  id          Int      @id             @default(autoincrement())
   password    String
   email       String?
   discordTag  String   @unique
@@ -38,20 +38,21 @@ model APIUser {
 }
 
 model AnonymousUser {
-  id                     Int @id @default(autoincrement())
+  id                     Int @id     @default(autoincrement())
   EcoleDirectePlusUserId Int @unique
-  date                   Int
+  date                   String
 }
 model DaylyVisits {
-  id    Int @id @default(autoincrement())
-  count Int
+  id        Int      @id @default(autoincrement())
+  count     Int
+  createdAt String
 }
 model DiscordServer {
-  id        Int    @id @default(autoincrement())
+  id               Int    @id @default(autoincrement())
   discordChannelID String
 }
 
 model Counter {
-  id     Int  @id @default(autoincrement())
+  id     Int  @id         @default(autoincrement())
   count  Int  @default(0)
 }

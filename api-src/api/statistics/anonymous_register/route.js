@@ -3,7 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-/* -- in this code, we just return satus code, for best handler client side - */
+/* -- in this code, we just return status codes for better client-side handling -- */
 
 const expModulary = (a, b, p) => {
     let result = 1;
@@ -20,65 +20,79 @@ const expModulary = (a, b, p) => {
     return result;
 };
 
+const formatDate = (date) => {
+    const day = String(date.getDate() + 1).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
+};
+
 router.post("/", async (req, res) => {
     const id = !req.body.id ? null : Number(req.body.id);
     if (!id) {
         return res.status(400).json({
-            error: "Your request is invalid, need to pass id",
+            error: "Your request is invalid, you need to pass an id",
         });
     }
+
     const cryptedId = expModulary(
-        id, // request id
-        14900 + Number(new Date().getFullYear()), // random values
-        Number(new Date().getFullYear()) * 7 // random values
+        id,
+        14900 + Number(new Date().getFullYear()), // Random values
+        Number(new Date().getFullYear()) * 7 // Random values
     );
 
-    const dayOfMonth = new Date().getDate();
+    const today = new Date();
+    const formatedDate = formatDate(today);
+
     try {
         const anUser = await prisma.anonymousUser.findFirst();
 
-        if (anUser.date !== dayOfMonth) {
+        if (!anUser || anUser.date !== formatedDate) {
             const lastVisit = await prisma.anonymousUser.findFirst({
                 orderBy: {
                     id: "desc",
                 },
             });
 
+            today.setDate(today.getDate() - 1);
             await prisma.daylyVisits.create({
                 data: {
-                    count: lastVisit.id,
+                    count: lastVisit ? lastVisit.id : 0,
+                    createdAt: formatDate(today),
                 },
             });
-            // get Supabase table name with schlag SQL inline :)
+
             const result =
                 await prisma.$queryRaw`SELECT pg_get_serial_sequence('"AnonymousUser"', 'id') as seqname`;
             const sequenceName = result[0].seqname;
-            // when we change date, id is reset to 1 with schlag SQL inline again
+
             await prisma.$executeRawUnsafe(
                 `ALTER SEQUENCE ${sequenceName} RESTART WITH 1`
             );
+
             await prisma.anonymousUser.deleteMany();
         }
     } catch (error) {
-        return res.status(500).json(); // unexpected error
+        console.error(error);
+        return res.status(500).json();
     }
+
     try {
         await prisma.anonymousUser.create({
             data: {
                 EcoleDirectePlusUserId: cryptedId,
-                date: dayOfMonth,
+                date: formatedDate,
             },
         });
-        return res.json();
+
+        return res.status(201).json();
     } catch (error) {
         if (error.code === "P2002") {
-            // Handle unique constraint error (duplicate entry)
-
-            return res.status(801).json(); // already connected today
+            return res.status(409).json();
         } else {
-            // Handle other errors
-
-            return res.status(500).json(); // unexpected error
+            console.error(error);
+            return res.status(500).json();
         }
     }
 });
