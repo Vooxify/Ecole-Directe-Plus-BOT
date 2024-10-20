@@ -7,7 +7,7 @@ const {
     checkUserConnection,
 } = require("../../../middlewares/auth/checkUserConnection");
 
-router.post("/", async (req, res) => {
+router.post("/", checkUserConnection, async (req, res) => {
     try {
         const body = req.body;
         const url = new URL(req.originalUrl, `http://${req.headers.host}`);

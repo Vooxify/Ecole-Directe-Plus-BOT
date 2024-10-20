@@ -1,6 +1,8 @@
 const express = require("express");
 const urlencodedParser = express.urlencoded({ extended: false });
 const { verifyToken } = require("../../middlewares/auth/utils/verifyToken");
+const { PrismaClient, Group } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 /* -------------------------------- function -------------------------------- */
 
@@ -9,6 +11,25 @@ const handleToken = async (authToken, req, res, next) => {
 
     if (payload.message) {
         return res.status(400).json({ error: payload.message });
+    }
+    const user = await prisma.aPIUser.findUnique({
+        where: {
+            email: payload.payload.email,
+            group: payload.payload.group,
+            discordTag: payload.payload.discordTag,
+            id: payload.payload.id,
+            username: payload.payload.username,
+        },
+    });
+    if (user.group !== Group.AUTHUSER) {
+        return res.status(422).json({
+            error: "You are not able to access this",
+        });
+    }
+    if (!user) {
+        return res.status(404).json({
+            error: `${payload.payload.username} doesn't exist in the database`,
+        });
     }
     next();
 };
