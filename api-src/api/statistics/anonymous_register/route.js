@@ -3,6 +3,8 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+/* -- in this code, we just return satus code, for best handler client side - */
+
 const expModulary = (a, b, p) => {
     let result = 1;
     a = a % p;
@@ -51,16 +53,14 @@ router.post("/", async (req, res) => {
             const result =
                 await prisma.$queryRaw`SELECT pg_get_serial_sequence('"AnonymousUser"', 'id') as seqname`;
             const sequenceName = result[0].seqname;
-            // when we change date, id is reset to 1
+            // when we change date, id is reset to 1 with schlag SQL inline again
             await prisma.$executeRawUnsafe(
                 `ALTER SEQUENCE ${sequenceName} RESTART WITH 1`
             );
             await prisma.anonymousUser.deleteMany();
         }
     } catch (error) {
-        return res.status(500).json({
-            error: `Unexpected error: ${error}`,
-        });
+        return res.status(500).json(); // unexpected error
     }
     try {
         await prisma.anonymousUser.create({
@@ -78,9 +78,7 @@ router.post("/", async (req, res) => {
         } else {
             // Handle other errors
 
-            return res.status(500).json({
-                error: "An unexpected error occurred.",
-            });
+            return res.status(500).json(); // unexpected error
         }
     }
 });
