@@ -25,7 +25,7 @@ module.exports = {
 
             const data = await response.json();
 
-            const channelId = data.channelId.replace(/"/g, "");
+            const channelId = data.channelId.replace(/"/g, ""); // remove ""
             const channelLink = await client.channels.fetch(channelId);
 
             if (!channelLink) {
