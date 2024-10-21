@@ -1,21 +1,61 @@
-const { DiscordAPIError } = require("discord.js");
-const { get_json_stat_channel_id } = require("./tools/get_json_content");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 module.exports = {
     name: "getchannel",
-    description: "Get the last setted id channel",
+    description: "Get the last set channel ID",
+    options: [
+        {
+            name: "token",
+            description: "Your secret token",
+            type: ApplicationCommandOptionType.String,
+            requied: true,
+        },
+    ],
     callback: async (client, interaction) => {
+        const token = interaction.options._hoistedOptions[0].value;
+
         try {
-            const json_id = await get_json_stat_channel_id();
-            channel_link = await client.channels.fetch(json_id.stat_channel_id);
-            interaction.reply({
-                content: `The setted channel where message will be sent is ${channel_link}, you can change it with '/setchannel [<channel>]'`,
+            const response = await fetch(
+                "http://localhost:3000/api/discord/stat_channel/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        commandMethod: "get",
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return interaction.reply({
+                    content: `:x: ERROR : ${data.error}`,
+                    ephemeral: true,
+                });
+            }
+
+            const channelId = data.channelId.replace(/"/g, ""); // remove ""
+            const channelLink = await client.channels.fetch(channelId);
+
+            if (!channelLink) {
+                return interaction.reply({
+                    content:
+                        ":x: Could not find the channel. Set it with /setchannel <channel>",
+                    ephemeral: true,
+                });
+            }
+
+            return interaction.reply({
+                content: `:white_check_mark: Statistics channel is : ${channelLink}`,
                 ephemeral: true,
             });
-        } catch (DiscordAPIError) {
-            interaction.reply({
-                content:
-                    "The channel saved is unrecognized, set it with '/setchannel [<channel>]'",
+        } catch (error) {
+            return interaction.reply({
+                content: `:x: There was an error: ${error.message}`,
                 ephemeral: true,
             });
         }
