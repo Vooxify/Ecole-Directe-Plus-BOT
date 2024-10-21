@@ -5,9 +5,8 @@
     "main": "api_interface/utils/index.js   ",
     "scripts": {
         "devA": "nodemon --watch api-src --ext js,json --ignore node_modules --exec node api-src/index.js",
-        "formatA": "prettier --write \"api-src/**/*.{js,py,txt}\"",
         "devD": "nodemon",
-        "formatD": "prettier --write \"discord_bot-src/**/*.{js,py,txt}\""
+        "format": "prettier --write \"discord_bot-src/**/*.{js,py,txt}\" \"api-src/**/*.{js,py,txt}\""
     },
     "author": "vooxify.public@outlook.fr",
     "license": "ISC",
