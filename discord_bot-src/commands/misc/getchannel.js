@@ -1,7 +1,20 @@
+const { ApplicationCommandOptionType } = require("discord.js");
+const { options } = require("./setchannel");
+
 module.exports = {
     name: "getchannel",
     description: "Get the last set channel ID",
+    options: [
+        {
+            name: "token",
+            description: "Your secret token",
+            type: ApplicationCommandOptionType.String,
+            requied: true,
+        },
+    ],
     callback: async (client, interaction) => {
+        const token = interaction.options._hoistedOptions[0].value;
+
         try {
             const response = await fetch(
                 "http://localhost:3000/api/discord/stat_channel/",
@@ -9,6 +22,7 @@ module.exports = {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({
                         commandMethod: "get",
@@ -16,14 +30,14 @@ module.exports = {
                 }
             );
 
+            const data = await response.json();
+
             if (!response.ok) {
                 return interaction.reply({
-                    content: `:x: ERROR : ${await response.text()}`,
+                    content: `:x: ERROR : ${data.error}`,
                     ephemeral: true,
                 });
             }
-
-            const data = await response.json();
 
             const channelId = data.channelId.replace(/"/g, ""); // remove ""
             const channelLink = await client.channels.fetch(channelId);

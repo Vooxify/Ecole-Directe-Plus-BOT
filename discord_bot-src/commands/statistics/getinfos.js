@@ -7,8 +7,13 @@ module.exports = {
     options: [
         {
             name: "startdate",
+            description: "YOOOO",
             type: ApplicationCommandOptionType.String,
         },
     ],
-    callback: async (client, interaction) => {},
+    callback: async (client, interaction) => {
+        interaction.reply({
+            content: "YOOOOOO",
+        });
+    },
 };

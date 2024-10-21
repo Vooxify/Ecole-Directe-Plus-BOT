@@ -5,6 +5,12 @@ module.exports = {
     description: "set channel id",
     options: [
         {
+            name: "token",
+            description: "Your secret token",
+            type: ApplicationCommandOptionType.String,
+            required: true,
+        },
+        {
             name: "id",
             description: "id desc",
             type: ApplicationCommandOptionType.Channel,
@@ -12,44 +18,64 @@ module.exports = {
         },
     ],
     callback: async (client, interaction) => {
-        const statChannelId = interaction.options._hoistedOptions[0].value; // get channel id param
+        const statChannelId = interaction.options._hoistedOptions[1].value; // get channel id param
         const statChannel = await client.channels.fetch(statChannelId);
-
-        fetch(
-            `http://localhost:3000/api/discord/stat_channel?id=${statChannelId}`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    commandMethod: "set",
-                }),
-            }
-        )
-            .then((response) => {
-                if (!response.ok) {
-                    interaction.reply({
-                        content: `:x: ERROR : ${response.json}`,
-                        ephemeral: true,
-                    });
+        const token = interaction.options._hoistedOptions[0].value;
+        try {
+            const response = await fetch(
+                `http://localhost:3000/api/discord/stat_channel?id=${statChannelId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        commandMethod: "set",
+                    }),
                 }
-                return response.json();
-            })
-            .then((data) => {
-                interaction.reply({
-                    content: `:white_check_mark: ${JSON.stringify(data.message)
-                        .replace(`${statChannelId}`, `${statChannel}`)
-                        .replace(/"/g, "")}`, // remove this -> ""
-                    ephemeral: true,
+            );
+            const json = await response.json();
+
+            if (!response.ok) {
+                return interaction.reply({
+                    content: `:x: An error was occured: ${json.error}`,
                 });
-            })
-            .catch((error) => {
-                interaction.reply({
-                    content: `:x: There was an error : ${error}`,
-                    ephemeral: true,
-                });
+            }
+            return interaction.reply({
+                content: `:white_check_mark: ${json.message
+                    .replace(`${statChannelId}`, `${statChannel}`)
+                    .replace(/"/g, "")}`,
             });
+        } catch (error) {
+            return interaction.reply({
+                content: `:x: There was an error: ${error}`,
+            });
+        }
+        // .then((response) => {
+        //     if (!response.ok) {
+        //         interaction.reply({
+        //             content: `:x: ERROR : ${response.json}`,
+        //             ephemeral: true,
+        //         });
+        //     }
+        //     return response.json();
+        // })
+        // .then((data) => {
+        //     console.log(data);
+        //     interaction.reply({
+        //         content: `:white_check_mark: ${JSON.stringify(data.message)
+        //             .replace(`${statChannelId}`, `${statChannel}`)
+        //             .replace(/"/g, "")}`, // remove this -> ""
+        //         ephemeral: true,
+        //     });
+        // })
+        // .catch((error) => {
+        //     interaction.reply({
+        //         content: `:x: There was an error : ${error}`,
+        //         ephemeral: true,
+        //     });
+        // });
     },
 };
 
