@@ -1,5 +1,4 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { options } = require("./setchannel");
 
 module.exports = {
     name: "getchannel",
