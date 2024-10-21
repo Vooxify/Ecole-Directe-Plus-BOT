@@ -38,8 +38,8 @@ router.post("/", async (req, res) => {
 
     const cryptedId = expModulary(
         id,
-        14900 + Number(new Date().getFullYear()), // Random values
-        Number(new Date().getFullYear()) * 7 // Random values
+        14900 + Number(new Date().getFullYear()), // Random values but importants
+        Number(new Date().getFullYear()) * 7 // Random values importants
     );
 
     const today = new Date();

@@ -3,20 +3,16 @@ const router = express.Router();
 const { PrismaClient, Group } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const {
+    checkUserConnection,
+} = require("../../../middlewares/auth/checkUserConnection");
 
 function validateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-const checkEnumValue = (inputValue) => {
-    if (Object.values(Group).includes(inputValue)) {
-        return true;
-    }
-    return false;
-};
-
-router.post("/", async (req, res) => {
+router.post("/", checkUserConnection, async (req, res) => {
     const body = req.body;
     const bodyShape = {
         email: body.email,
