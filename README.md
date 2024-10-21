@@ -129,11 +129,9 @@ model AnonymousUserVisit {
   EcoleDirectePlusUserId Int @unique
 }
 
-model Counter {
-  id     Int  @id @default(autoincrement())
-  count  Int  @default(0)
-}
 ```
+
+> \> **NOTE**: After migrating with `npx prisma migrate dev` for create and init tables, remember to generate your Prisma client with `npx prisma generate`
 
 Once you have all the files set up as above, you need to generate your private and public keys. Here's how to proceed:
 

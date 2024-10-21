@@ -51,8 +51,3 @@ model DiscordServer {
   id               Int    @id @default(autoincrement())
   discordChannelID String
 }
-
-model Counter {
-  id     Int  @id         @default(autoincrement())
-  count  Int  @default(0)
-}

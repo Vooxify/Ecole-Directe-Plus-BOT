@@ -21,7 +21,7 @@ const expModulary = (a, b, p) => {
 };
 
 const formatDate = (date) => {
-    const day = String(date.getDate() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(-2);
 
@@ -46,9 +46,13 @@ router.post("/", async (req, res) => {
     const formatedDate = formatDate(today);
 
     try {
-        const anUser = await prisma.anonymousUser.findFirst();
-
-        if (!anUser || anUser.date !== formatedDate) {
+        const anUser = await prisma.anonymousUser.findFirst({});
+        if (!anUser) {
+            return res.status(500).json({
+                error: "The table is empty, you need to init she with: id: 1; EcoleDirectePlusUserId: 1; date: <today with dd/mm/yy>",
+            });
+        }
+        if (anUser.date !== formatedDate) {
             const lastVisit = await prisma.anonymousUser.findFirst({
                 orderBy: {
                     id: "desc",
