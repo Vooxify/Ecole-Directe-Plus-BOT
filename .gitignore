@@ -5,3 +5,4 @@ test.js
 .certs/private.pem
 node_modules/
 package-lock.json
+prisma/
