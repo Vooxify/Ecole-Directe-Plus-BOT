@@ -1,6 +1,6 @@
 {
-    "watch": ["api_interface"],
+    "watch": ["api-src", "discord_bot-src"],
     "ext": "js,json",
     "ignore": ["node_modules"],
-    "exec": "node ./api_interface/index.js"
+    "exec": "node ./api-src/index.js"
 }
