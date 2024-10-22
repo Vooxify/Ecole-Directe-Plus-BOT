@@ -82,7 +82,7 @@ DATABASE_URL="<YOUR DATABASE LINK>"
 JWT_TIMING=<YOUR JWT TIMING, e.g., 1h>
 ```
 
-Next, ensure you have the same `schema.prisma` structure as below:
+Next, execute `npx prisma init` and copy paste the same `schema.prisma` structure as below:
 
 ```prisma
 // This is your Prisma schema file.
